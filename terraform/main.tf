@@ -24,7 +24,7 @@ provider "openstack" {
 locals {
   app_name           = "pgadmin"
   flavor             = "gp1.small"
-  key_pair           = "Leon Mac"
+  key_pair           = ""
   enable_floating_ip = true
 }
 
