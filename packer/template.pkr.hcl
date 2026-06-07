@@ -8,7 +8,7 @@ packer {
 }
 
 locals {
-  cloud = "openstack"
+  cloud                   = "openstack"
   provision_script        = "scripts/provision.sh"
   source_image_name       = "Ubuntu 22.04"
   flavor                  = "gp1.small"
@@ -20,18 +20,18 @@ locals {
 }
 
 source "openstack" "image" {
-  cloud             = local.cloud
-  image_name        = var.image_name
-  source_image_name = local.source_image_name
-  flavor            = local.flavor
-  networks          = var.networks
-  security_groups   = var.security_groups
+  cloud                   = local.cloud
+  image_name              = var.image_name
+  source_image_name       = local.source_image_name
+  flavor                  = local.flavor
+  networks                = var.networks
+  security_groups         = var.security_groups
   use_blockstorage_volume = local.use_blockstorage_volume
   volume_size             = local.volume_size
-  use_floating_ip   = local.use_floating_ip
-  ssh_ip_version    = "4"
-  ssh_timeout       = local.ssh_timeout
-  ssh_username      = local.ssh_username
+  use_floating_ip         = local.use_floating_ip
+  ssh_ip_version          = "4"
+  ssh_timeout             = local.ssh_timeout
+  ssh_username            = local.ssh_username
 }
 
 build {
@@ -44,7 +44,7 @@ build {
     ]
   }
   provisioner "shell" {
-    script = local.provision_script
+    script      = local.provision_script
     max_retries = 3
   }
 }
