@@ -4,16 +4,13 @@ set -euo pipefail
 echo "[1/6] Waiting for cloud-init to complete..."
 cloud-init status --wait || true
 
-echo "[2/6] Updating package lists and installing prerequisites..."
-sudo apt-get update
-sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+echo "[2/6] Adding official pgAdmin4 apt repository..."
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
   curl \
-  wget \
   ca-certificates \
   gnupg \
   lsb-release
 
-echo "[3/6] Adding official pgAdmin4 apt repository..."
 sudo rm -f /usr/share/keyrings/packages-pgadmin-org.gpg
 curl -fsSL https://www.pgadmin.org/static/packages_pgadmin_org.pub \
   | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/packages-pgadmin-org.gpg
@@ -22,10 +19,9 @@ echo "deb [signed-by=/usr/share/keyrings/packages-pgadmin-org.gpg] \
 https://ftp.postgresql.org/pub/pgadmin/pgadmin4/apt/$(lsb_release -cs) pgadmin4 main" \
   | sudo tee /etc/apt/sources.list.d/pgadmin4.list > /dev/null
 
+echo "[3/6] Updating package lists and installing pgAdmin4 (web mode) and PostgreSQL..."
 sudo apt-get update
-
-echo "[4/6] Installing pgAdmin4 (web mode) and PostgreSQL..."
-sudo DEBIAN_FRONTEND=noninteractive apt-get install -y pgadmin4-web postgresql postgresql-contrib
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y pgadmin4-web postgresql
 
 echo "[5/6] Initializing pgAdmin4 via setup-web.sh (DB will be wiped after)..."
 export PGADMIN_SETUP_EMAIL='init@example.com'

@@ -31,7 +31,7 @@ output "team_vms" {
       instance_name = openstack_compute_instance_v2.team_pgadmin[team].name
       fixed_ip      = openstack_compute_instance_v2.team_pgadmin[team].network[0].fixed_ip_v4
       floating_ip   = local.enable_floating_ip ? openstack_networking_floatingip_v2.team_fip[team].address : null
-      pgadmin_url   = local.enable_floating_ip ? "http://${openstack_networking_floatingip_v2.team_fip[team].address}/pgadmin4" : "http://${openstack_compute_instance_v2.team_pgadmin[team].network[0].fixed_ip_v4}/pgadmin4"
+      url           = local.enable_floating_ip ? "http://${openstack_networking_floatingip_v2.team_fip[team].address}/pgadmin4" : "http://${openstack_compute_instance_v2.team_pgadmin[team].network[0].fixed_ip_v4}/pgadmin4"
     }
   }
 }
