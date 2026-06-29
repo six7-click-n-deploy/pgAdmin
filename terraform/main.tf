@@ -65,7 +65,7 @@ locals {
   # "Team #1" → "team-1@example.com"
   team_account_email = {
     for team in local.teams_list : team =>
-      "${replace(replace(lower(team), " ", "-"), "/[^a-z0-9-]/", "")}@example.com"
+    "${replace(replace(lower(team), " ", "-"), "/[^a-z0-9-]/", "")}@example.com"
   }
 }
 
