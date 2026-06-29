@@ -58,9 +58,14 @@ locals {
   users_map  = { for user in local.all_users : user.id => user }
   teams_list = distinct([for user in local.all_users : user.team])
 
-  # Team-Email als pgAdmin-Login: team-a -> team-a@example.com
+  # Team-Email als pgAdmin-Login.
+  # Team-Namen können Leerzeichen und Sonderzeichen enthalten (z.B. "Team #1"),
+  # die in E-Mail-Adressen ungültig sind. Daher wird der Name normalisiert:
+  # Kleinschreibung, Leerzeichen → "-", alle nicht-alphanumerischen Zeichen (außer "-") entfernen.
+  # "Team #1" → "team-1@example.com"
   team_account_email = {
-    for team in local.teams_list : team => "${team}@example.com"
+    for team in local.teams_list : team =>
+      "${replace(replace(lower(team), " ", "-"), "/[^a-z0-9-]/", "")}@example.com"
   }
 }
 
